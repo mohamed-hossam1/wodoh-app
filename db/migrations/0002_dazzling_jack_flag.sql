@@ -1,0 +1,25 @@
+CREATE INDEX "idx_clients_organization_id" ON "clients" USING btree ("organization_id");--> statement-breakpoint
+CREATE INDEX "idx_clients_username" ON "clients" USING btree ("username");--> statement-breakpoint
+CREATE INDEX "idx_clients_deleted_at" ON "clients" USING btree ("deleted_at");--> statement-breakpoint
+CREATE INDEX "idx_clients_portal_token" ON "clients" USING btree ("portal_token");--> statement-breakpoint
+CREATE INDEX "idx_organizations_user_id" ON "organizations" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX "idx_organizations_deleted_at" ON "organizations" USING btree ("deleted_at");--> statement-breakpoint
+CREATE INDEX "idx_project_files_project_id" ON "project_files" USING btree ("project_id");--> statement-breakpoint
+CREATE INDEX "idx_project_notes_project_id" ON "project_notes" USING btree ("project_id");--> statement-breakpoint
+CREATE INDEX "idx_project_payments_project_id" ON "project_payments" USING btree ("project_id");--> statement-breakpoint
+CREATE INDEX "idx_project_payments_organization_id" ON "project_payments" USING btree ("organization_id");--> statement-breakpoint
+CREATE INDEX "idx_project_payments_status" ON "project_payments" USING btree ("status");--> statement-breakpoint
+CREATE INDEX "idx_project_payments_due_date" ON "project_payments" USING btree ("due_date");--> statement-breakpoint
+CREATE INDEX "idx_project_phases_project_id" ON "project_phases" USING btree ("project_id");--> statement-breakpoint
+CREATE INDEX "idx_project_phases_order_index" ON "project_phases" USING btree ("order_index");--> statement-breakpoint
+CREATE INDEX "idx_project_phases_deleted_at" ON "project_phases" USING btree ("deleted_at");--> statement-breakpoint
+CREATE INDEX "idx_project_updates_project_id" ON "project_updates" USING btree ("project_id");--> statement-breakpoint
+CREATE INDEX "idx_project_updates_created_at" ON "project_updates" USING btree ("created_at");--> statement-breakpoint
+CREATE INDEX "idx_projects_organization_id" ON "projects" USING btree ("organization_id");--> statement-breakpoint
+CREATE INDEX "idx_projects_client_id" ON "projects" USING btree ("client_id");--> statement-breakpoint
+CREATE INDEX "idx_projects_status" ON "projects" USING btree ("status");--> statement-breakpoint
+CREATE INDEX "idx_projects_deleted_at" ON "projects" USING btree ("deleted_at");--> statement-breakpoint
+CREATE INDEX "idx_projects_created_at" ON "projects" USING btree ("created_at");--> statement-breakpoint
+CREATE INDEX "idx_tasks_phase_id" ON "tasks" USING btree ("phase_id");--> statement-breakpoint
+CREATE INDEX "idx_tasks_is_completed" ON "tasks" USING btree ("is_completed");--> statement-breakpoint
+CREATE INDEX "idx_tasks_order_index" ON "tasks" USING btree ("order_index");
