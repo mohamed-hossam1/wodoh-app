@@ -16,20 +16,7 @@ export const SignUpSchema = z.object({
   name: z
     .string()
     .min(3, { message: "Username must be at least 3 characters long." })
-    .max(30, { message: "Username cannot exceed 30 characters." })
-    .regex(/^[a-zA-Z0-9_]+$/, {
-      message: "Username can only contain letters, numbers, and underscores.",
-    }),
-
-  organizationName: z
-    .string()
-    .min(3, {
-      message: "Organization name must be at least 3 characters long.",
-    })
-    .max(30, { message: "Organization name cannot exceed 30 characters." })
-    .regex(/^[a-zA-Z0-9_]+$/, {
-      message: "Username can only contain letters, numbers, and underscores.",
-    }),
+    .max(30, { message: "Username cannot exceed 30 characters." }),
 
   email: z
     .string()
@@ -39,15 +26,5 @@ export const SignUpSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long." })
-    .max(100, { message: "Password cannot exceed 100 characters." })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one uppercase letter.",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one lowercase letter.",
-    })
-    .regex(/[0-9]/, { message: "Password must contain at least one number." })
-    .regex(/[^a-zA-Z0-9]/, {
-      message: "Password must contain at least one special character.",
-    }),
+    .max(100, { message: "Password cannot exceed 100 characters." }),
 });

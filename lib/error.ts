@@ -51,3 +51,10 @@ export class ForbiddenError extends AppError {
     this.name = "ForbiddenError";
   }
 }
+
+export class DataBaseError extends AppError {
+  constructor(message = "DataBase") {
+    super(message, 500);
+    this.name = "DataBaseError";
+  }
+}

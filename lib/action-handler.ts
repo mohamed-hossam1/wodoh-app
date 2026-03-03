@@ -21,7 +21,7 @@ export async function handleAction<T>(
 
     return {
       success: false,
-      message: "Something went wrong",
+      message: `Something went wrong ${error}`,
       statusCode: 500,
     };
   }
