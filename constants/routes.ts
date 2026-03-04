@@ -4,4 +4,5 @@ export const ROUTES = {
   LOGIN: "/login",
   FORGOTPASSWORD: "/forgot-password",
   ADMIN: "/admin",
+  VERIFY: "/verify",
 };

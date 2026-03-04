@@ -48,11 +48,10 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
     }
 
     toast.success(
-      isSignIn ? "Successful login" : "Account created successfully",
-      { position: "top-center" }
+      isSignIn ? "Successful login" : "Check your email and click the verification link to activate your account.",
+      { position: "top-center" },
     );
-
-    router.replace(ROUTES.ADMIN);
+    isSignIn ? router.replace(ROUTES.ADMIN) : router.replace(ROUTES.VERIFY);
   }
 
   return (
@@ -120,9 +119,7 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
                       type={showPassword ? "text" : "password"}
                       aria-invalid={fieldState.invalid}
                       placeholder={
-                        isSignIn
-                          ? "Your password"
-                          : "Create a strong password"
+                        isSignIn ? "Your password" : "Create a strong password"
                       }
                       autoComplete={
                         isSignIn ? "current-password" : "new-password"
@@ -135,11 +132,7 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
                       onClick={() => setShowPassword((prev) => !prev)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                     >
-                      {showPassword ? (
-                        <EyeOff size={18} />
-                      ) : (
-                        <Eye size={18} />
-                      )}
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
 
                     {fieldState.invalid && (
@@ -166,8 +159,19 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
 
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="submit" form={formId} className="flex-1 cursor-pointer">
-            {isSignIn ? "Sign in" : "Create account"}
+          <Button
+            type="submit"
+            form={formId}
+            className="flex-1 cursor-pointer"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting
+              ? isSignIn
+                ? "Signing in..."
+                : "Creating account..."
+              : isSignIn
+                ? "Sign in"
+                : "Create account"}
           </Button>
         </Field>
       </CardFooter>

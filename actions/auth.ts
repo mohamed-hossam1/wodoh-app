@@ -11,6 +11,7 @@ import z from "zod";
 import {
   ForgotPasswordSchema,
   LoginSchema,
+  OTPSchema,
   RegisterSchema,
   ResetPasswordSchema,
 } from "@/lib/validations";
@@ -18,35 +19,75 @@ import { zodValidate } from "@/lib/zod-validate";
 
 export async function register(formData: z.infer<typeof RegisterSchema>) {
   return handleAction(async () => {
-    const user = zodValidate(RegisterSchema, formData);
-    const name = user.name as string;
-    const email = user.email as string;
-    const password = user.password as string;
+    const validated = zodValidate(RegisterSchema, formData);
     const supabase = await createClient();
+
     const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
+      email: validated.email,
+      password: validated.password,
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/welcome`,
+      },
     });
+
     if (error) throw new AppError(error.message);
     if (!data.user) throw new AppError("Try again");
-    const [org] = await db
+
+    const cookieStore = await cookies();
+
+    cookieStore.set("pending_org_name", validated.name, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 10,
+    });
+
+    return { };
+  });
+}
+
+export async function handleAuthCallback() {
+  const supabase = await createClient();
+  const cookieStore = await cookies();
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) throw new Error("Authentication failed");
+
+  let org = await db.query.organizations.findFirst({
+    where: eq(organizations.userId, user.id),
+    columns: { id: true },
+  });
+
+  if (!org) {
+    const orgName = cookieStore.get("pending_org_name")?.value;
+    if (!orgName) throw new Error("Organization name missing");
+
+    const [newOrg] = await db
       .insert(organizations)
       .values({
-        userId: data.user.id,
-        name: name,
+        userId: user.id,
+        name: orgName,
         plan: "free",
       })
       .returning();
 
-    const cookieStore = await cookies();
-    cookieStore.set("org_id", org.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-    return data.user.id;
+    org = newOrg;
+
+    cookieStore.delete("pending_org_name");
+  }
+
+  cookieStore.set("org_id", org.id, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 7,
   });
+
+  return { };
 }
 
 export async function login(formData: z.infer<typeof LoginSchema>) {
@@ -77,7 +118,7 @@ export async function login(formData: z.infer<typeof LoginSchema>) {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    return data.user.id;
+    return data.user;
   });
 }
 
