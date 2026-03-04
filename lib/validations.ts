@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const SignInSchema = z.object({
+export const LoginSchema = z.object({
   email: z
     .string()
     .min(1, { message: "Email is required." })
@@ -12,7 +12,7 @@ export const SignInSchema = z.object({
     .max(100, { message: "Password cannot exceed 100 characters." }),
 });
 
-export const SignUpSchema = z.object({
+export const RegisterSchema = z.object({
   name: z
     .string()
     .min(3, { message: "Username must be at least 3 characters long." })
@@ -23,6 +23,20 @@ export const SignUpSchema = z.object({
     .min(1, { message: "Email is required." })
     .email({ message: "Please provide a valid email address." }),
 
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long." })
+    .max(100, { message: "Password cannot exceed 100 characters." }),
+});
+
+export const ForgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "Email is required." })
+    .email({ message: "Please provide a valid email address." }),
+});
+
+export const ResetPasswordSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long." })
