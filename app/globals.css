@@ -11,6 +11,7 @@
   --color-secondary: var(--secondary);
   --color-text-color: var(--text-color);
   --color-text-secondary: var(--text-secondary);
+  --color-grid-color: var(--grid-color);
 
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -52,15 +53,17 @@
 
 :root {
   --radius: 10px;
-  --background: #061113;
+  --background: #efefef;
   --primary: #00c542;
-  --secondary: #060c07;
-  --border: #ffffff10;
-  --text-color: #ffffff;
-  --input: #ffffff10;
-  --text-secondary: #d8d8d8;
-
-
+  --secondary: #9f9f9f;
+  --border: #00000010;
+  --text-color: #000000;
+  --input: #00000010;
+  --text-secondary: #191919;
+  --grid-color: #000;
+  --muted-foreground: oklch(0.556 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -71,7 +74,10 @@
   --text-color: #ffffff;
   --text-secondary: #d8d8d8;
   --input: #ffffff10;
-
+  --grid-color: #fff;
+  --muted-foreground: oklch(0.708 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --ring: oklch(0.556 0 0);
 }
 
 @layer base {
