@@ -48,14 +48,16 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
     }
 
     toast.success(
-      isSignIn ? "Successful login" : "Check your email and click the verification link to activate your account.",
+      isSignIn
+        ? "Successful login"
+        : "Check your email and click the verification link to activate your account.",
       { position: "top-center" },
     );
     isSignIn ? router.replace(ROUTES.ADMIN) : router.replace(ROUTES.VERIFY);
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-background text-text-color">
       <CardContent>
         <form id={formId} onSubmit={form.handleSubmit(handleSubmit)}>
           <FieldGroup className="gap-5">
@@ -134,11 +136,10 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
-
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
                   </FieldContent>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
                 </Field>
               )}
             />
@@ -162,7 +163,7 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
           <Button
             type="submit"
             form={formId}
-            className="flex-1 cursor-pointer"
+            className="flex-1 cursor-pointer text-background"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting

@@ -46,7 +46,7 @@ export default function ResetPasswordForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-background text-text-color">
       <CardContent>
         <form id={formId} onSubmit={form.handleSubmit(handleSubmit)}>
           <FieldGroup className="gap-5">
@@ -70,19 +70,14 @@ export default function ResetPasswordForm() {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary"
                     >
-                      {showPassword ? (
-                        <EyeOff size={18} />
-                      ) : (
-                        <Eye size={18} />
-                      )}
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
-
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
                   </FieldContent>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
                 </Field>
               )}
             />
@@ -91,7 +86,7 @@ export default function ResetPasswordForm() {
               <Button
                 type="submit"
                 form={formId}
-                className="flex-1 cursor-pointer"
+                className="flex-1 cursor-pointer text-background"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? "Sending..." : "Send"}
@@ -102,7 +97,7 @@ export default function ResetPasswordForm() {
       </CardContent>
 
       <CardFooter className="justify-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-text-secondary">
           Remembered your password?{" "}
           <Link href={ROUTES.LOGIN} className="text-primary hover:underline">
             Back to login

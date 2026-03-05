@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
 
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,10 +25,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-primary selection:text-secondary min-h-screen`}
       >
-        {children}
-        <Toaster />
+        <div className="relative min-h-screen overflow-hidden">
+          <div
+            className="absolute inset-0 opacity-[0.03] -z-10 pointer-events-none"
+            style={{
+              backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
+              backgroundSize: "40px 40px",
+            }}
+          />
+          <div className="absolute top-[20%] left-[-20%] w-[70%] h-[70%] bg-primary/6 blur-[200px] rounded-full -z-50" />
+          <div className="absolute bottom-[20%] right-[-20%] w-[70%] h-[70%] bg-primary/6 blur-[200px] rounded-full -z-50" />
+          {children}
+        </div>
       </body>
     </html>
   );

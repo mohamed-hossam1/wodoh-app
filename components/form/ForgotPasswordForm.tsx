@@ -60,7 +60,7 @@ export default function ForgotPasswordForm({
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-background text-text-secondary">
       <CardContent>
         <form id={formId} onSubmit={form.handleSubmit(handleSubmit)}>
           <FieldGroup className="gap-5">
@@ -90,7 +90,7 @@ export default function ForgotPasswordForm({
               <Button
                 type="submit"
                 form={formId}
-                className="flex-1 cursor-pointer"
+                className="flex-1 cursor-pointer text-background"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? "Sending..." : "Send"}
@@ -100,7 +100,7 @@ export default function ForgotPasswordForm({
         </form>
       </CardContent>
       <CardFooter className="justify-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-text-secondary">
           Remembered your password?{" "}
           <Link href={ROUTES.LOGIN} className="text-primary hover:underline">
             Back to login

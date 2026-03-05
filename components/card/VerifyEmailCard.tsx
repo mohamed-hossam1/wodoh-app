@@ -11,13 +11,13 @@ import { ROUTES } from "@/constants/routes";
 
 export default function VerifyEmailCard() {
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-background">
       <div className="mx-auto">
         <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
           <MailCheck className="size-6" />
         </div>
       </div>
-      <CardContent className="space-y-3 text-sm text-muted-foreground">
+      <CardContent className="space-y-3 text-sm text-text-secondary">
         <p>
           If you don&apos;t see the email within a few minutes, check your spam
           or promotions folder.
@@ -28,10 +28,10 @@ export default function VerifyEmailCard() {
         </p>
       </CardContent>
       <CardFooter className="flex w-full flex-col gap-3">
-        <Button asChild className="w-full">
+        <Button asChild className="w-full text-background">
           <Link href={ROUTES.LOGIN}>Back to sign in</Link>
         </Button>
-        <Button asChild variant="outline" className="w-full">
+        <Button asChild variant="outline" className="w-full bg-secondary text-text-color">
           <Link href={ROUTES.REGISTER}>Use a different email</Link>
         </Button>
       </CardFooter>
