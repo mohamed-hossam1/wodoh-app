@@ -26,7 +26,7 @@ export async function register(formData: z.infer<typeof RegisterSchema>) {
       email: validated.email,
       password: validated.password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/welcome`,
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`,
       },
     });
 

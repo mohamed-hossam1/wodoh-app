@@ -2,14 +2,12 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "../ui/button";
+import { CircleCheck } from "lucide-react";
 
 type ForgotPasswordSuccessProps = {
   email: string;
@@ -22,12 +20,11 @@ export default function ForgotPasswordSuccess({
 }: ForgotPasswordSuccessProps) {
   return (
     <Card className="w-full max-w-md">
-      <CardHeader className="text-center">
-        <CardTitle>Check your email</CardTitle>
-        <CardDescription>
-          If an account exists for {email}, we sent a password reset link.
-        </CardDescription>
-      </CardHeader>
+      <div className="mx-auto">
+        <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <CircleCheck className="size-6"  />
+        </div>
+      </div>
       <CardContent className="space-y-4 text-sm text-muted-foreground">
         <p>
           Open your inbox and follow the instructions to reset your password.

@@ -19,10 +19,6 @@ export async function getSession() {
 }
 
 export async function getOrgId() {
-  const cookieStore = await cookies();
-  const cached = cookieStore.get("org_id")?.value;
-  if (cached) return cached;
-
   const user = await getSession();
   const org = await db.query.organizations.findFirst({
     where: eq(organizations.userId, user.id),
@@ -30,9 +26,10 @@ export async function getOrgId() {
   });
   if (!org) throw new AppError("Organization not found", 404);
 
+  const cookieStore = await cookies();
   cookieStore.set("org_id", org.id, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 7,
   });
