@@ -36,8 +36,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative min-h-screen overflow-hidden">
-            <Grid />
+          <div className="relative min-h-screen">
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+              <Grid />
+            </div>
             {children}
           </div>
         </ThemeProvider>

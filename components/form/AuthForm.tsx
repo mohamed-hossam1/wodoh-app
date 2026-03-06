@@ -93,7 +93,7 @@ export function AuthForm({ schema, defaultValues, formType }: AuthFormProps) {
           <Button
             type="button"
             variant="outline"
-            className="w-full"
+            className="w-full cursor-pointer"
             onClick={handleGoogleSignIn}
             disabled={oauthLoading || form.formState.isSubmitting}
           >

@@ -20,7 +20,7 @@ export default function Grid() {
             backgroundSize: "40px 40px",
           }}
         />
-        <div className="absolute top-[17%] left-[15%] w-[70%] h-[70%] bg-primary/6 blur-[200px] rounded-full -z-50" />
+        <div className="absolute top-[5%] left-[7.5%] w-[85%] h-[90%] bg-primary/10 blur-[200px] rounded-full -z-50" />
       </div>
     </>
   );
