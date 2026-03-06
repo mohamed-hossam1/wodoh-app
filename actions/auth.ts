@@ -11,7 +11,6 @@ import z from "zod";
 import {
   ForgotPasswordSchema,
   LoginSchema,
-  OTPSchema,
   RegisterSchema,
   ResetPasswordSchema,
 } from "@/lib/validations";
@@ -42,52 +41,32 @@ export async function register(formData: z.infer<typeof RegisterSchema>) {
       maxAge: 60 * 10,
     });
 
-    return { };
+    return {};
   });
 }
 
-export async function handleAuthCallback() {
-  const supabase = await createClient();
-  const cookieStore = await cookies();
+type GoogleSignInPayload = {
+  mode: "login" | "register";
+};
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+export async function signInWithGoogle(payload?: GoogleSignInPayload) {
+  return handleAction(async () => {
+    const supabase = await createClient();
+    const mode = payload?.mode ?? "login";
 
-  if (error || !user) throw new Error("Authentication failed");
+    const redirectPath = mode === "login" ? "/admin" : "/welcome";
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback?next=${redirectPath}`,
+      },
+    });
 
-  let org = await db.query.organizations.findFirst({
-    where: eq(organizations.userId, user.id),
-    columns: { id: true },
+    if (error) throw new AppError(error.message);
+    if (!data?.url) throw new AppError("Unable to start Google sign in");
+
+    return { url: data.url };
   });
-
-  if (!org) {
-    const orgName = cookieStore.get("pending_org_name")?.value;
-    if (!orgName) throw new Error("Organization name missing");
-
-    const [newOrg] = await db
-      .insert(organizations)
-      .values({
-        userId: user.id,
-        name: orgName,
-        plan: "free",
-      })
-      .returning();
-
-    org = newOrg;
-
-    cookieStore.delete("pending_org_name");
-  }
-
-  cookieStore.set("org_id", org.id, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-
-  return { };
 }
 
 export async function login(formData: z.infer<typeof LoginSchema>) {

@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   }
 
   const defaultRedirect =
-    type === "recovery" ? "/reset-password" : "/welcome";
+    type === "recovery" ? "/reset-password" : "/admin";
   const redirectPath = getSafeRedirectPath(request, defaultRedirect);
 
   const response = NextResponse.redirect(new URL(redirectPath, request.url));
@@ -68,21 +68,23 @@ export async function GET(request: NextRequest) {
 
     if (!org) {
       const pendingOrgName = request.cookies.get("pending_org_name")?.value;
-      if (!pendingOrgName) {
-        return NextResponse.redirect(new URL("/login", request.url));
-      }
+      const name = user.user_metadata.name ?? "";
+      const derivedOrgName =
+        pendingOrgName?.trim() || name.trim() || "My Workspace";
 
       const [newOrg] = await db
         .insert(organizations)
         .values({
           userId: user.id,
-          name: pendingOrgName,
+          name: derivedOrgName,
           plan: "free",
         })
         .returning();
 
       org = newOrg;
-      response.cookies.delete("pending_org_name");
+      if (pendingOrgName) {
+        response.cookies.delete("pending_org_name");
+      }
     }
 
     response.cookies.set("org_id", org.id, {
