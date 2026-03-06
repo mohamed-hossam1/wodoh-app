@@ -53,9 +53,11 @@
 
 :root {
   --radius: 10px;
-  --background: #efefef;
+  --background: #f7f7f7;
+  --card: #fff;
+  
   --primary: #00c542;
-  --secondary: #9f9f9f;
+  --secondary: #fefeff;
   --border: #00000010;
   --text-color: #000000;
   --input: #00000010;
@@ -68,6 +70,7 @@
 
 .dark {
   --background: #061113;
+  --card: #061113;
   --primary: #00c542;
   --secondary: #060c07;
   --border: #ffffff10;

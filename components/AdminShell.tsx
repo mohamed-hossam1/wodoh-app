@@ -41,14 +41,16 @@ export default function AdminShell({
 
       <aside
         id="admin-sidebar"
-        className={`fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 md:sticky md:self-start md:translate-x-0 ${
+        className={`fixed max-h-screen inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 md:sticky md:self-start md:translate-x-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <Sidebar className="h-full md:h-auto md:max-h-[calc(100vh-2rem)] md:overflow-y-auto" />
+        <Sidebar className="h-full md:h-auto md:max-h-[calc(100vh-2rem)] md:overflow-y-hidden" />
       </aside>
 
-      <div className="flex min-w-0 flex-1">{children}</div>
+      <div className="flex min-w-0 flex-1">
+        {children}
+      </div>
     </div>
   );
 }

@@ -1,12 +1,11 @@
 "use client";
 
 import { ROUTES } from "@/constants/routes";
-import {
-  LogOut,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import PinnedProjects from "./PinnedProjects";
 import SideLinks from "./SideLinks";
+import { ModeToggle } from "../ui/mode-toggle";
 export default function Sidebar({ className = "" }: { className?: string }) {
   return (
     <div
@@ -16,8 +15,9 @@ export default function Sidebar({ className = "" }: { className?: string }) {
         <Link href={ROUTES.ADMIN} className="text-primary font-bold text-xl ">
           Wodoh
         </Link>
+        <ModeToggle />
       </div>
-      <SideLinks/>
+      <SideLinks />
       <PinnedProjects />
       <button className="flex items-center justify-center gap-5 rounded-xl border bg-secondary py-3">
         <span className="font-bold">Sign out</span>

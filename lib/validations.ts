@@ -29,10 +29,6 @@ export const RegisterSchema = z.object({
     .max(100, { message: "Password cannot exceed 100 characters." }),
 });
 
-export const OTPSchema = z.object({
-  otp: z.string().regex(/^\d{6}$/, "OTP must be exactly 6 digits"),
-});
-
 export const ForgotPasswordSchema = z.object({
   email: z
     .string()

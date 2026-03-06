@@ -12,7 +12,7 @@ export default function Grid() {
         <div className="absolute top-[20%] left-[-20%] w-[70%] h-[70%] bg-primary/6 blur-[200px] rounded-full -z-50 " />
         <div className="absolute bottom-[20%] right-[-20%] w-[70%] h-[70%] bg-primary/6 blur-[200px] rounded-full -z-50" />
       </div>
-      <div className=" block dark:hidden">
+      <div className=" block dark:hidden ">
         <div
           className="absolute inset-0 opacity-[0.03] -z-10 pointer-events-none"
           style={{

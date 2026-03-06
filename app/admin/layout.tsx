@@ -7,6 +7,7 @@ export default function AdminLayout({
 }>) {
   return (
     <>
+      <div className="absolute left-0 w-full h-full bg-primary/10 blur-[250px]  -z-50" />
       <AdminShell>{children}</AdminShell>
     </>
   );
