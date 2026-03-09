@@ -62,3 +62,8 @@ export const projectsSchema = z.object({
   deliveryDate: z.coerce.date().nullable().optional(),
   deletedAt: z.date().nullable().optional(),
 });
+
+export const projectNotesSchema = z.object({
+  name: z.string().min(1, { message: "Note name is required." }),
+  content: z.string().min(1, { message: "Note content is required." }),
+});

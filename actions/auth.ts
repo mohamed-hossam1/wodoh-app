@@ -15,6 +15,11 @@ import {
   ResetPasswordSchema,
 } from "@/lib/validations";
 import { zodValidate } from "@/lib/zod-validate";
+import {
+  removeOrganizationId,
+  setOrganizationId,
+  setOrganizationname,
+} from "./organization";
 
 export async function register(formData: z.infer<typeof RegisterSchema>) {
   return handleAction(async () => {
@@ -32,14 +37,7 @@ export async function register(formData: z.infer<typeof RegisterSchema>) {
     if (error) throw new AppError(error.message);
     if (!data.user) throw new AppError("Try again");
 
-    const cookieStore = await cookies();
-
-    cookieStore.set("pending_org_name", validated.name, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 10,
-    });
+    await setOrganizationname(validated.name);
 
     return {};
   });
@@ -88,14 +86,7 @@ export async function login(formData: z.infer<typeof LoginSchema>) {
     });
 
     if (!org) throw new AppError("Organization not found");
-
-    const cookieStore = await cookies();
-    cookieStore.set("org_id", org.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    setOrganizationId(org.id);
 
     return data.user;
   });
@@ -105,8 +96,7 @@ export async function signOut() {
   return handleAction(async () => {
     const supabase = await createClient();
     await supabase.auth.signOut();
-    const cookieStore = await cookies();
-    cookieStore.delete("org_id");
+    await removeOrganizationId();
   });
 }
 

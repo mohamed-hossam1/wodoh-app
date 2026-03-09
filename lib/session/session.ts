@@ -24,7 +24,7 @@ export async function getOrgId() {
     where: eq(organizations.userId, user.id),
     columns: { id: true },
   });
-  if (!org) throw new AppError("Organization not found", 404);
+  if (!org) throw new AppError("Organization not found");
 
   const cookieStore = await cookies();
   cookieStore.set("org_id", org.id, {

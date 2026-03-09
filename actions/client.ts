@@ -2,26 +2,27 @@
 
 import { db } from "@/db";
 import { clients } from "@/db/schema";
-import { cookies } from "next/headers";
 import { handleAction } from "@/lib/action-handler";
 import { AppError, NotFoundError } from "@/lib/error";
 import z from "zod";
 import { clientsSchema } from "@/lib/validations";
 import { zodValidate } from "@/lib/zod-validate";
 import { and, eq } from "drizzle-orm";
+import { getOrganizationId } from "./organization";
 
-export async function createClient(formData: z.infer<typeof clientsSchema>) {
+type ProjectNoteFormData = z.infer<typeof clientsSchema>;
+
+export async function createClient(formData: ProjectNoteFormData) {
   return handleAction(async () => {
-    const validated = zodValidate(clientsSchema, formData);
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const validatedClientData = zodValidate(clientsSchema, formData);
+    const organizationId = await getOrganizationId();
     if (!organizationId) throw new NotFoundError("organizationId");
     const [newClient] = await db
       .insert(clients)
       .values({
         organizationId,
-        name: validated.name,
-        phone: validated.phone,
+        name: validatedClientData.name,
+        phone: validatedClientData.phone,
       })
       .returning();
     if (!newClient) {
@@ -34,8 +35,7 @@ export async function createClient(formData: z.infer<typeof clientsSchema>) {
 
 export async function getClients() {
   return handleAction(async () => {
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const organizationId = await getOrganizationId();
 
     if (!organizationId) throw new NotFoundError("organizationId");
 
@@ -50,8 +50,7 @@ export async function getClients() {
 
 export async function getClient(clientId: string) {
   return handleAction(async () => {
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const organizationId = await getOrganizationId();
 
     if (!organizationId) throw new NotFoundError("organizationId");
 
@@ -71,25 +70,25 @@ export async function getClient(clientId: string) {
 
 export async function updateClient(
   clientId: string,
-  formData: Partial<z.infer<typeof clientsSchema>>,
+  formData: Partial<ProjectNoteFormData>,
 ) {
   return handleAction(async () => {
-    const validated = zodValidate(clientsSchema, formData, "PARTIAL");
-    
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const validatedClientData = zodValidate(clientsSchema, formData, "PARTIAL");
+
+    const organizationId = await getOrganizationId();
 
     if (!organizationId) throw new NotFoundError("organizationId");
 
     const client = await db
       .update(clients)
-      .set(validated)
+      .set(validatedClientData)
       .where(
         and(
           eq(clients.organizationId, organizationId),
           eq(clients.id, clientId),
         ),
-      ).returning();
+      )
+      .returning();
 
     return { client };
   });

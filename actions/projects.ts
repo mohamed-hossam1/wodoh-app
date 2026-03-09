@@ -2,7 +2,6 @@
 
 import { db } from "@/db";
 import { projects } from "@/db/schema";
-import { cookies } from "next/headers";
 import { handleAction } from "@/lib/action-handler";
 import { AppError, NotFoundError } from "@/lib/error";
 import {
@@ -13,20 +12,20 @@ import {
 import { projectsSchema } from "@/lib/validations";
 import { zodValidate } from "@/lib/zod-validate";
 import { and, eq } from "drizzle-orm";
+import { getOrganizationId } from "./organization";
 
 export async function createProject(
   projectData: ProjectFormData,
   clientId: string,
 ) {
   return handleAction(async () => {
-    const validated = zodValidate(projectsSchema, projectData);
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const validatedProjectData = zodValidate(projectsSchema, projectData);
+    const organizationId = await getOrganizationId();
     if (!organizationId) throw new NotFoundError("organizationId");
 
     const [newProject] = await db
       .insert(projects)
-      .values(mapProjectCreateValues(validated, organizationId, clientId))
+      .values(mapProjectCreateValues(validatedProjectData, organizationId, clientId))
       .returning();
     if (!newProject) {
       throw new AppError("Project was not created");
@@ -38,8 +37,7 @@ export async function createProject(
 
 export async function getProjects() {
   return handleAction(async () => {
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const organizationId = await getOrganizationId();
 
     if (!organizationId) throw new NotFoundError("organizationId");
 
@@ -54,8 +52,7 @@ export async function getProjects() {
 
 export async function getProject(projectId: string) {
   return handleAction(async () => {
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const organizationId = await getOrganizationId();
 
     if (!organizationId) throw new NotFoundError("organizationId");
 
@@ -78,16 +75,15 @@ export async function updateProject(
   formData: Partial<ProjectFormData>,
 ) {
   return handleAction(async () => {
-    const validated = zodValidate(projectsSchema, formData, "PARTIAL");
+    const validatedProjectData = zodValidate(projectsSchema, formData, "PARTIAL");
 
-    const cookieStore = await cookies();
-    const organizationId = cookieStore.get("org_id")?.value;
+    const organizationId = await getOrganizationId();
 
     if (!organizationId) throw new NotFoundError("organizationId");
 
     const project = await db
       .update(projects)
-      .set(mapProjectValues(validated))
+      .set(mapProjectValues(validatedProjectData))
       .where(
         and(
           eq(projects.organizationId, organizationId),

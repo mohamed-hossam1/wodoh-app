@@ -5,7 +5,6 @@ export const tableHeaders: {
 }[] = [
   { key: "project", label: "Project" },
   { key: "client", label: "Client" },
-  { key: "progress", label: "Progress" },
   { key: "status", label: "Status" },
   { key: "dueDate", label: "Due Date" },
   { key: "amount", label: "Amount" },
@@ -15,7 +14,6 @@ export const tableHeaders: {
 export const tableRow = {
   project: "Mobile App Development",
   client: "Advanced Tech Company",
-  progress: "75%",
   status: "Active",
   dueDate: "Mar 15, 2024",
   amount: "SAR 45,000",
