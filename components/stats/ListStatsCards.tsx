@@ -1,4 +1,4 @@
-import { StatItem } from "@/types";
+import { StatItem } from "@/types/global";
 import StatCard from "./StatCard";
 
 export default function ListStatsCards({ items }: { items: StatItem[] }) {

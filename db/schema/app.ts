@@ -47,14 +47,12 @@ export const clients = pgTable(
       .references(() => organizations.id),
     name: text('name').notNull(),
     phone: text('phone'),
-    username: text('username').notNull(),
-    portalToken: text('portal_token').notNull().unique(),
+    portalToken: uuid('portal_token').notNull().unique().defaultRandom(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     deletedAt: timestamp('deleted_at'),
   },
   (table) => [
     index('idx_clients_organization_id').on(table.organizationId),
-    index('idx_clients_username').on(table.username),
     index('idx_clients_deleted_at').on(table.deletedAt),
     index('idx_clients_portal_token').on(table.portalToken),
   ]

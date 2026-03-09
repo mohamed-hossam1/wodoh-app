@@ -1,8 +1,6 @@
 import { ActionResult } from "@/types/global";
 import { AppError } from "./error";
 
-
-
 export async function handleAction<T>(
   fn: () => Promise<T>,
 ): Promise<ActionResult<T>> {
@@ -18,10 +16,11 @@ export async function handleAction<T>(
         errors: error.errors,
       };
     }
+    const cause = (error as Error & { cause?: unknown }).cause;
 
     return {
       success: false,
-      message: `Something went wrong ${error}`,
+      message: `Something went wrong, \n ${cause}`,
       statusCode: 500,
     };
   }

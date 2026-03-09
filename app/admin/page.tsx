@@ -7,7 +7,9 @@ import { paymentSummaryCard } from "@/data/payment-summary";
 import ListStatsCards from "@/components/stats/ListStatsCards";
 import { adminStats } from "@/data/stats/admin-stats";
 
+
 export default function adminDashboard() {
+
   return (
     <div className="flex w-full min-w-0 flex-1 flex-col gap-6 rounded-xl bg-background p-4 sm:p-6 lg:p-8 m-4 sm:m-6 lg:m-10">
       <AdminHeader

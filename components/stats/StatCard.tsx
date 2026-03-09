@@ -1,4 +1,4 @@
-import { StatItem } from "@/types";
+import { StatItem } from "@/types/global";
 
 export default function StatCard({
   title,
